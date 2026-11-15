@@ -16,7 +16,8 @@ module bcd_adder (
         // Step 2: Check if sum exceeds 9 (1001)
         if (sum_temp > 5'd9) begin
             corrected_sum = sum_temp + 5'd6; // Add correction factor of 6
-        end else begin
+        end 
+        else begin
             corrected_sum = sum_temp;
         end
     end
