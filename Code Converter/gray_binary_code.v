@@ -1,15 +1,15 @@
 module gray_to_binary(
-  input wire [3:0]g,
-  output reg [3:0]b
+    input [3:0] gray_in,
+    output [3:0] bin_out
 );
-  parameter w=4;
-  genvar i;
-  generate
-    for(i=0;i<w;i++)begin
-      assign b[i]=^(g >> i);
-    end
-  endgenerate
+
+    assign bin_out[3] = gray_in[3];
+    assign bin_out[2] = bin_out[3] ^ gray_in[2];
+    assign bin_out[1] = bin_out[2] ^ gray_in[1];
+    assign bin_out[0] = bin_out[1] ^ gray_in[0];
+
 endmodule
+
 
 module test_bench_gray_to_binary;
   wire [3:0]tb;

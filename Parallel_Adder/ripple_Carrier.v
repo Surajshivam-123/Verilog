@@ -1,6 +1,3 @@
-// =================================================================
-// 1. Leaf Child Module: 1-bit Full Adder
-// =================================================================
 module full_adder (
     input  wire a,
     input  wire b,
@@ -8,14 +5,9 @@ module full_adder (
     output wire sum,
     output wire cout
 );
-    // Continuous assignment using dataflow modeling
     assign sum  = a ^ b ^ cin;
     assign cout = (a & b) | (b & cin) | (a & cin);
 endmodule
-
-// =================================================================
-// 2. Parent Top Module: 4-Bit Ripple Carry Adder
-// =================================================================
 module ripple_carry_adder_4bit (
     input  wire [3:0] A,
     input  wire [3:0] B,
@@ -23,10 +15,8 @@ module ripple_carry_adder_4bit (
     output wire [3:0] Sum,
     output wire       Cout
 );
-    // Internal carry chain nets (connecting sub-modules)
     wire [2:0] c;
 
-    // Instantiating 4 full adders using "Connection by Name"
     full_adder fa0 (
         .a    (A[0]),
         .b    (B[0]),
@@ -60,25 +50,16 @@ module ripple_carry_adder_4bit (
     );
 endmodule
 
-// =================================================================
-// 3. Testbench Demonstrating Port Connection Rules & Arrays
-// =================================================================
 module tb_ripple_carry_adder;
-    // Port Connection Rule in Testbench:
-    // Inputs to DUT must be driven -> declared as 'reg'
-    // Outputs from DUT are monitored -> declared as 'wire'
     reg  [3:0] tb_A;
     reg  [3:0] tb_B;
     reg        tb_Cin;
     wire [3:0] tb_Sum;
     wire       tb_Cout;
 
-    // Array / Memory declaration: 4 test vectors of 9 bits each
-    // Format: {Cin, A[3:0], B[3:0]}
     reg [8:0] test_vectors [0:3];
     integer i;
 
-    // Instantiate Device Under Test (DUT)
     ripple_carry_adder_4bit dut (
         .A    (tb_A),
         .B    (tb_B),
@@ -88,16 +69,15 @@ module tb_ripple_carry_adder;
     );
 
     initial begin
-        // Initialize test vectors into array
-        test_vectors[0] = 9'b0_0010_0011; // 2 + 3 + Cin(0) = 5
-        test_vectors[1] = 9'b0_0101_0101; // 5 + 5 + Cin(0) = 10
-        test_vectors[2] = 9'b1_1111_0000; // 15 + 0 + Cin(1) = 16 (Sum=0, Cout=1)
-        test_vectors[3] = 9'b1_1111_1111; // 15 + 15 + Cin(1) = 31 (Sum=15, Cout=1)
+        test_vectors[0] = 9'b0_0010_0011; 
+        test_vectors[1] = 9'b0_0101_0101; 
+        test_vectors[2] = 9'b1_1111_0000; 
+        test_vectors[3] = 9'b1_1111_1111;
 
-        // Iterate through array elements
+       
         for (i = 0; i < 4; i = i + 1) begin
             {tb_Cin, tb_A, tb_B} = test_vectors[i];
-            #10; // Wait 10 time units for evaluationation
+            #10;
             $display("Vector %0d: A=%d, B=%d, Cin=%b | Sum=%d, Cout=%b", 
                      i, tb_A, tb_B, tb_Cin, tb_Sum, tb_Cout);
         end
