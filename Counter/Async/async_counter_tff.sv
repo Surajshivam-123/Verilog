@@ -11,8 +11,8 @@ module async_counter(clk,rst,count);
   input clk,rst;
   output [2:0]count;
   t_ff ff0(1'b1,clk,rst,count[0]);
-  t_ff ff1(1'b1,~count[0],rst,count[1]);
-  t_ff ff2(1'b1,~count[1],rst,count[2]);
+  t_ff ff1(1'b1,count[0],rst,count[1]);
+  t_ff ff2(1'b1,count[1],rst,count[2]);
 endmodule
 
 module tb_async_up_counter; 
